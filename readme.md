@@ -22,4 +22,4 @@ services.udev.extraRules = ''
 `cargo build --target thumbv7em-none-eabihf`
 
 ## Flash
-`cargo embed --features v2 --target thumbv7em-none-eabihf`
+`cargo embed --target thumbv7em-none-eabihf`

@@ -28,43 +28,35 @@ fn main() -> ! {
     let mut state = [0, 0];
 
     loop {
-        let mut state = iterate(&mut state);
-        iterate_matrix_from_state(state, &mut matrix);
-        display.show(&mut timer, matrix, 1000);
+        let [x, y] = state;
+        matrix[y as usize][x as usize] = 0;
+
+        let [x, y] = iterate(&mut state);
+        matrix[*y as usize][*x as usize] = 1;
+
+        display.show(&mut timer, matrix, 100);
 
         display.clear();
-        timer.delay_ms(1000_u32);
+        timer.delay_ms(100_u32);
     }
-}
-
-fn iterate_matrix_from_state<'a>(
-    state: &[u8; 2],
-    matrix: &'a mut [[u8; 5]; 5],
-) -> &'a [[u8; 5]; 5] {
-    let [x, y] = state;
-
-    // TODO: iter_mut
-    matrix
 }
 
 fn iterate(state: &mut [u8; 2]) -> &[u8; 2] {
     match state {
-        [x, 0] => {
-            state[0] = *x + 1;
+        [0, y] if *y > 0 => {
+            state[1] = *y - 1;
             state
         }
-        [4, y] => {
-            state[0] = *y + 1;
-            state
-        }
-
         [x, 4] => {
             state[0] = *x - 1;
             state
         }
-
-        [0, y] => {
-            state[0] = *y - 1;
+        [4, y] => {
+            state[1] = *y + 1;
+            state
+        }
+        [x, 0] => {
+            state[0] = *x + 1;
             state
         }
         _ => unreachable!(),
